@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { FaLock, FaCloud, FaMobile, FaUsers, FaShieldAlt, FaFileAlt, FaSyncAlt, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
-// import Image from "next/image";
+import { FaLock, FaCloud, FaMobile, FaUsers, FaShieldAlt, FaFileAlt, FaSyncAlt, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHistory } from "react-icons/fa";
 import Head from "next/head";
 import { Button } from "@/public/components/ui/button";
 import { Card, CardContent } from "@/public/components/ui/card";
+import Script from "next/script";
 
 export default function CloudNotesLanding() {
   return (
@@ -13,32 +13,36 @@ export default function CloudNotesLanding() {
         <meta name="description" content="Organize, encrypt, and store your notes with ease using CloudNotes." />
         <meta name="keywords" content="CloudNotes, secure notes, encrypted notes, cloud storage" />
         <meta name="author" content="CloudNotes Team" />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        <script>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX');
-          `}
-        </script>
       </Head>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+      `,
+        }}
+      />
+
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col items-center">
         {/* Header */}
         <nav className="w-full flex justify-between items-center p-6 bg-gray-900 shadow-md">
           <div className="flex items-center space-x-2">
             {/* <Image src={logoSymbol} alt="CloudNotes Logo" width={40} height={40} className="rounded" /> */}
-            <h1 className="text-2xl font-bold text-blue-400">CloudNoteश्री</h1>
-          </div>
-          <div className="space-x-4">
-            <Button className="bg-blue-600 hover:bg-blue-500">Sign Up</Button>
-            <Button variant="outline">Login</Button>
+            <h1 className="text-2xl font-bold text-blue-400">CloudNotes</h1>
           </div>
         </nav>
 
         {/* Hero Section */}
         <header className="text-center py-20">
-          <motion.h1 
+          <motion.h1
             className="text-5xl font-bold"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,8 +51,23 @@ export default function CloudNotesLanding() {
           </motion.h1>
           <p className="mt-4 text-lg text-gray-300">Organize, encrypt, and store your notes with ease.</p>
           <div className="mt-6 space-x-4">
-            <Button className="bg-blue-600 hover:bg-blue-500">Sign Up</Button>
-            <Button variant="outline">Login</Button>
+            <Button
+              href="https://platform.cloudnotes.click/registration"
+              className="bg-blue-600 hover:bg-blue-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sign Up
+            </Button>
+
+            <Button
+              href="https://platform.cloudnotes.click/login"
+              variant="outline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Login
+            </Button>
           </div>
         </header>
 
@@ -61,6 +80,7 @@ export default function CloudNotesLanding() {
           <FeatureCard icon={<FaShieldAlt />} title="Advanced Security" desc="Multi-layered security features to protect your data." />
           <FeatureCard icon={<FaFileAlt />} title="Rich Text Editing" desc="Full-featured text editor for enhanced note-taking." />
           <FeatureCard icon={<FaSyncAlt />} title="Auto-Sync" desc="Your notes sync automatically across all your devices." />
+          <FeatureCard icon={<FaHistory />} title="Version History" desc="Access and restore previous versions of your notes with ease." />
         </section>
 
         {/* Email Subscription */}
@@ -68,7 +88,7 @@ export default function CloudNotesLanding() {
           <h2 className="text-2xl font-semibold">Stay Updated</h2>
           <p className="text-gray-400 mt-2">Subscribe to get the latest features and updates.</p>
           <div className="mt-4 flex justify-center">
-            <input type="email" placeholder="Enter your email" className="p-2 w-1/3 text-black rounded-l-md" />
+            <input type="email" placeholder="Enter your email" className="p-2 w-1/3 text-black bg-white rounded-l-md placeholder-gray-500" />
             <Button className="bg-blue-600 rounded-r-md">Subscribe</Button>
           </div>
         </section>

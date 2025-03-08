@@ -27,8 +27,18 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Cache Next.js build
+      uses: actions/cache@v3
+      with:
+        path: |
+          .next/cache
+        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nextjs-
+
+
     - name: Build application
-      run: npm run build && npm run export
+      run:  npm run build
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
@@ -39,10 +49,10 @@ jobs:
 
     - name: Deploy to S3
       run: |
-        aws s3 sync out/ s3://${{ env.S3_BUCKET }} --delete
-        aws s3 cp s3://${{ env.S3_BUCKET }}/_next s3://${{ env.S3_BUCKET }}/_next --recursive --cache-control "public, max-age=31536000, immutable"
-        aws s3 cp s3://${{ env.S3_BUCKET }}/static s3://${{ env.S3_BUCKET }}/static --recursive --cache-control "public, max-age=31536000, immutable"
-
+          aws s3 sync out/ s3://${{ env.S3_BUCKET }} --delete
+          aws s3 cp s3://${{ env.S3_BUCKET }}/_next s3://${{ env.S3_BUCKET }}/_next --recursive --cache-control "public, max-age=31536000, immutable"
+          aws s3 cp s3://${{ env.S3_BUCKET }}/static s3://${{ env.S3_BUCKET }}/static --recursive --cache-control "public, max-age=31536000, immutable"
+    
     - name: Invalidate CloudFront cache
       run: |
         aws cloudfront create-invalidation \

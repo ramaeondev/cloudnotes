@@ -4,8 +4,46 @@ import Head from "next/head";
 import { Button } from "@/public/components/ui/button";
 import { Card, CardContent } from "@/public/components/ui/card";
 import Script from "next/script";
+import Image from "next/image";
+import logoSymbol from "@/public/cloudnotes.svg";
+import { useState } from "react";
 
 export default function CloudNotesLanding() {
+  const [email, setEmail] = useState(""); // State for email input
+  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [message, setMessage] = useState(""); // State for success/error messages
+
+    // Handle form submission
+    const handleSubscribe = async (e: React.FormEvent) => {
+      e.preventDefault(); // Prevent default form submission
+      setLoading(true); // Set loading state
+      setMessage(""); // Clear previous messages
+  
+      try {
+        const response = await fetch("https://prod-api.cloudnotes.com/v1/email-subscription", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }), // Send email in the request body
+        });
+  
+        const data = await response.json(); // Parse response JSON
+  
+        if (response.ok) {
+          setMessage("Thank you for subscribing!"); // Success message
+          setEmail(""); // Clear email input
+        } else {
+          setMessage(data.message || "Something went wrong. Please try again."); // Error message
+        }
+      } catch (error) {
+        setMessage("Failed to connect to the server. Please try again later."); // Network error
+        console.log(error);        
+      } finally {
+        setLoading(false); // Reset loading state
+      }
+    };
+  
   return (
     <>
       <Head>
@@ -35,23 +73,11 @@ export default function CloudNotesLanding() {
         {/* Header */}
         <nav className="w-full flex justify-between items-center p-6 bg-gray-900 shadow-md">
           <div className="flex items-center space-x-2">
-            {/* <Image src={logoSymbol} alt="CloudNotes Logo" width={40} height={40} className="rounded" /> */}
+            <Image src={logoSymbol} alt="CloudNotes Logo" width={40} height={40} className="rounded" />
             <h1 className="text-2xl font-bold text-blue-400">CloudNotes</h1>
           </div>
-        </nav>
-
-        {/* Hero Section */}
-        <header className="text-center py-20">
-          <motion.h1
-            className="text-5xl font-bold"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            CloudNotes: Secure & Unlimited Note-Taking
-          </motion.h1>
-          <p className="mt-4 text-lg text-gray-300">Organize, encrypt, and store your notes with ease.</p>
-          <div className="mt-6 space-x-4">
-            <Button
+          <div className="space-x-4">
+          <Button
               href="https://platform.cloudnotes.click/registration"
               className="bg-blue-600 hover:bg-blue-500"
               target="_blank"
@@ -69,6 +95,18 @@ export default function CloudNotesLanding() {
               Login
             </Button>
           </div>
+        </nav>
+
+        {/* Hero Section */}
+        <header className="text-center py-20">
+          <motion.h1
+            className="text-5xl font-bold"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            CloudNotes: Secure & Unlimited Note-Taking
+          </motion.h1>
+          <p className="mt-4 text-lg text-gray-300">Organize, encrypt, and store your notes with ease.</p>
         </header>
 
         {/* Features Section */}
@@ -87,10 +125,20 @@ export default function CloudNotesLanding() {
         <section className="bg-gray-900 p-10 text-center w-full">
           <h2 className="text-2xl font-semibold">Stay Updated</h2>
           <p className="text-gray-400 mt-2">Subscribe to get the latest features and updates.</p>
-          <div className="mt-4 flex justify-center">
-            <input type="email" placeholder="Enter your email" className="p-2 w-1/3 text-black bg-white rounded-l-md placeholder-gray-500" />
-            <Button className="bg-blue-600 rounded-r-md">Subscribe</Button>
-          </div>
+          <form onSubmit={handleSubscribe} className="mt-4 flex justify-center">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="p-2 w-1/3 text-black bg-white rounded-l-md placeholder-gray-500"
+              required
+            />
+            <Button type="submit" className="bg-blue-600 rounded-r-md" disabled={loading}>
+              {loading ? "Subscribing..." : "Subscribe"}
+            </Button>
+          </form>
+          {message && <p className="mt-4 text-sm text-blue-400">{message}</p>} {/* Display success/error message */}
         </section>
 
         {/* Footer */}

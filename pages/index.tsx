@@ -20,11 +20,10 @@ export default function CloudNotesLanding() {
       setMessage(""); // Clear previous messages
   
       try {
-        const response = await fetch("https://gyyhnbzekafnvxflhlni.supabase.co/functions/v1/newsletter-subscribe", {
+        const response = await fetch("https://api.therama.dev/functions/v1/newsletter-subscribe", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`, // Use your Supabase anon key
           },
           body: JSON.stringify({ email : email }), // Send email in the request body
         });
@@ -55,7 +54,7 @@ export default function CloudNotesLanding() {
       </Head>
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+        src={`https://www.googletagmanager.com/gtag/js?id=G-GP1C9FM54R`}
       />
       <Script
         id="google-analytics"
@@ -65,7 +64,7 @@ export default function CloudNotesLanding() {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
+        gtag('config', 'G-GP1C9FM54R');
       `,
         }}
       />

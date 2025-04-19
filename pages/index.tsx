@@ -78,7 +78,7 @@ export default function CloudNotesLanding() {
           </div>
           <div className="space-x-4">
           <Button
-              href="https://platform.cloudnotes.click/registration"
+              href="https://platform.cloudnotes.click/signup"
               className="bg-blue-600 hover:bg-blue-500"
               target="_blank"
               rel="noopener noreferrer"
@@ -87,7 +87,7 @@ export default function CloudNotesLanding() {
             </Button>
 
             <Button
-              href="https://platform.cloudnotes.click/login"
+              href="https://platform.cloudnotes.click/signin"
               variant="outline"
               target="_blank"
               rel="noopener noreferrer"

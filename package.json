@@ -8,6 +8,7 @@
   "description": "A Landing website for the cloudnotes app, built with Next.js and Tailwind CSS.",
   "author": "Ramaeon",
   "license": "MIT",
+  "status": "Production",
   "homepage": "https://cludnotes.click",
   "repository": {
     "type": "git",

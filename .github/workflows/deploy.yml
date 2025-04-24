@@ -6,11 +6,6 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  S3_BUCKET: ${{ secrets.S3_BUCKET }}
-  CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -50,12 +45,19 @@ jobs:
 
     - name: Deploy to S3
       run: |
-          aws s3 sync out/ s3://${{ env.S3_BUCKET }} --delete
-          aws s3 cp s3://${{ env.S3_BUCKET }}/_next s3://${{ env.S3_BUCKET }}/_next --recursive --cache-control "public, max-age=31536000, immutable"
-          aws s3 cp s3://${{ env.S3_BUCKET }}/static s3://${{ env.S3_BUCKET }}/static --recursive --cache-control "public, max-age=31536000, immutable"
+          aws s3 sync out/ s3://${{ secrets.S3_BUCKET }} --delete
+          aws s3 cp s3://${{ secrets.S3_BUCKET }}/_next s3://${{ secrets.S3_BUCKET }}/_next --recursive --cache-control "public, max-age=31536000, immutable"
+          aws s3 cp s3://${{ secrets.S3_BUCKET }}/static s3://${{ secrets.S3_BUCKET }}/static --recursive --cache-control "public, max-age=31536000, immutable"
     
     - name: Invalidate CloudFront cache
       run: |
         aws cloudfront create-invalidation \
-          --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
           --paths "/*"
+    
+    - name: Log and Update Deployment
+      if: always()
+      uses: ramaeondev/therama.dev/.github/actions/log-and-update-deployment@master
+      with:
+        start_time: ${{ env.START_TIME }}
+        s3_bucket: ${{ secrets.S3_UPLOAD_BUCKET }}

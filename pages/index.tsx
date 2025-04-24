@@ -20,12 +20,12 @@ export default function CloudNotesLanding() {
       setMessage(""); // Clear previous messages
   
       try {
-        const response = await fetch("https://prod-api.cloudnotes.com/v1/email-subscription", {
+        const response = await fetch("https://api.therama.dev/functions/v1/newsletter-subscribe", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email }), // Send email in the request body
+          body: JSON.stringify({ email : email }), // Send email in the request body
         });
   
         const data = await response.json(); // Parse response JSON
@@ -54,7 +54,7 @@ export default function CloudNotesLanding() {
       </Head>
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+        src={`https://www.googletagmanager.com/gtag/js?id=G-GP1C9FM54R`}
       />
       <Script
         id="google-analytics"
@@ -64,7 +64,7 @@ export default function CloudNotesLanding() {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
+        gtag('config', 'G-GP1C9FM54R');
       `,
         }}
       />
@@ -78,7 +78,7 @@ export default function CloudNotesLanding() {
           </div>
           <div className="space-x-4">
           <Button
-              href="https://platform.cloudnotes.click/registration"
+              href="https://platform.cloudnotes.click/signup"
               className="bg-blue-600 hover:bg-blue-500"
               target="_blank"
               rel="noopener noreferrer"
@@ -87,7 +87,7 @@ export default function CloudNotesLanding() {
             </Button>
 
             <Button
-              href="https://platform.cloudnotes.click/login"
+              href="https://platform.cloudnotes.click/signin"
               variant="outline"
               target="_blank"
               rel="noopener noreferrer"
